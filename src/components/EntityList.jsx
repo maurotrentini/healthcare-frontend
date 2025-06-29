@@ -13,7 +13,9 @@ export default function EntityList({ rows, columns, newPath }) {
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
-        onRowDoubleClick={(params) => navigate(`${newPath.replace('new','')}/${params.id}/edit`)}
+        onRowDoubleClick={(params) => 
+            navigate(`${newPath.replace(/\/new$/, '')}/${params.id}/edit`)
+        }
       />
     </div>
   );
