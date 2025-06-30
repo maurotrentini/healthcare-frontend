@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import EntityList from "../../components/EntityList";
 import api from "../../api/api";
-import { Button, Box } from "@mui/material";
+import { Button, Box, CircularProgress } from "@mui/material";
 
 export default function AppointmentList() {
   const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
   const [pageUrl, setPageUrl] = useState("/appointments");
   const [pagination, setPagination] = useState({
     next: null,
@@ -13,6 +14,7 @@ export default function AppointmentList() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const [appointmentsRes, doctorsRes, patientsRes, clinicsRes] =
           await Promise.all([
@@ -66,6 +68,8 @@ export default function AppointmentList() {
         setAppointments(rows);
       } catch (err) {
         console.error("Failed to fetch appointments or associated data", err);
+      } finally {
+        setLoading(false); // Stop loading on both success and error
       }
     };
 
@@ -97,6 +101,14 @@ export default function AppointmentList() {
     { field: "clinic", headerName: "Clinic", width: 200 },
   ];
 
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" mt={5}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Box>
       <EntityList
@@ -105,7 +117,7 @@ export default function AppointmentList() {
         newPath="/appointments/new"
       />
 
-      <Box display="flex" justifyContent="center" mt={2} gap={2}>
+      <Box display="flex" justifyContent="center" mt={5} gap={2} pt={2}>
         <Button
           variant="outlined"
           onClick={() => setPageUrl(pagination.previous)}
