@@ -14,13 +14,13 @@ This is a simple frontend application for managing appointments, doctors, clinic
 
 ## 📁 Project Structure
 
-/src
-/api ← Axios config and helpers
-/components ← Reusable components like EntityList and Layout
-/pages ← Appointments, Doctors, Clinics, Patients (List + Form)
-App.jsx
-main.jsx
-router.jsx
+- /src
+- /api ← Axios config and helpers
+- /components ← Reusable components like EntityList and Layout
+- /pages ← Appointments, Doctors, Clinics, Patients (List + Form)
+- App.jsx
+- main.jsx
+- router.jsx
 
 ## 🚀 Getting Started
 
@@ -48,6 +48,8 @@ npm run dev
 ```
 
 This will start the development server
+
+### Notes
 
 ⚠️ Make sure your backend API is also running (e.g. on http://localhost:8000) and configured to allow CORS.
 
