@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
 import EntityList from "../../components/EntityList";
 import api from "../../api/api";
+import { Button, Box } from "@mui/material";
 
 export default function AppointmentList() {
   const [appointments, setAppointments] = useState([]);
+  const [pageUrl, setPageUrl] = useState("/appointments");
+  const [pagination, setPagination] = useState({
+    next: null,
+    previous: null,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [appointmentsRes, doctorsRes, patientsRes, clinicsRes] =
           await Promise.all([
-            api.get("/appointments"),
+            api.get(pageUrl),
             api.get("/doctors"),
             api.get("/patients"),
             api.get("/clinics"),
           ]);
 
+        // Build lookup maps keyed by the exact API IRIs:
         const doctorsMap = new Map(
           (doctorsRes.data.member || []).map((d) => [
             `/api/doctors/${d.id}`,
@@ -35,6 +42,14 @@ export default function AppointmentList() {
           ])
         );
 
+        // Extract pagination URLs
+        const view = appointmentsRes.data.view || {};
+        setPagination({
+          next: view.next?.replace("/api", "") || null,
+          previous: view.previous?.replace("/api", "") || null,
+        });
+
+        // Map appointment rows
         const rows = (appointmentsRes.data.member || []).map((appt) => ({
           id: appt.id,
           date: new Date(appt.date).toLocaleDateString("en-GB", {
@@ -55,9 +70,9 @@ export default function AppointmentList() {
     };
 
     fetchData();
-  }, []);
+  }, [pageUrl]);
 
-  // Improved time formatter: handles both "HH:mm:ss" and full ISO strings
+  // Time formatter: handles both "HH:mm:ss" and full ISO strings
   const formatTime = (timeStr) => {
     let dateObj;
     if (timeStr.includes("T")) {
@@ -83,10 +98,29 @@ export default function AppointmentList() {
   ];
 
   return (
-    <EntityList
-      rows={appointments}
-      columns={columns}
-      newPath="/appointments/new"
-    />
+    <Box>
+      <EntityList
+        rows={appointments}
+        columns={columns}
+        newPath="/appointments/new"
+      />
+
+      <Box display="flex" justifyContent="center" mt={2} gap={2}>
+        <Button
+          variant="outlined"
+          onClick={() => setPageUrl(pagination.previous)}
+          disabled={!pagination.previous}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => setPageUrl(pagination.next)}
+          disabled={!pagination.next}
+        >
+          Next
+        </Button>
+      </Box>
+    </Box>
   );
 }
