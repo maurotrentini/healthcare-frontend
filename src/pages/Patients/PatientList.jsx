@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import api from '../../api/api';
-import EntityList from '../../components/EntityList';
+import React, { useEffect, useState } from "react";
+import api from "../../api/api";
+import EntityList from "../../components/EntityList";
+import { CircularProgress, Box } from "@mui/material";
 
 function calculateAge(dob) {
   const birthDate = new Date(dob);
@@ -15,40 +16,47 @@ function calculateAge(dob) {
 
 export default function PatientList() {
   const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/patients')
-      .then(res => {
+    api
+      .get("/patients")
+      .then((res) => {
         const members = res.data.member || [];
-        const rows = members.map(p => ({
+        const rows = members.map((p) => ({
           id: p.id,
           name: `${p.firstName} ${p.lastName}`,
           dob: p.dateOfBirth
-            ? new Intl.DateTimeFormat('en-GB', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-                }).format(new Date(p.dateOfBirth))
-            : 'N/A',
-          age: p.dateOfBirth ? calculateAge(p.dateOfBirth) : 'N/A'
+            ? new Intl.DateTimeFormat("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              }).format(new Date(p.dateOfBirth))
+            : "N/A",
+          age: p.dateOfBirth ? calculateAge(p.dateOfBirth) : "N/A",
         }));
         setPatients(rows);
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'dob', headerName: 'Date of Birth', width: 150 },
-    { field: 'age', headerName: 'Age', width: 100 },
+    { field: "id", headerName: "ID", width: 70 },
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "dob", headerName: "Date of Birth", width: 150 },
+    { field: "age", headerName: "Age", width: 100 },
   ];
 
+  if (loading) {
+    return (
+      <Box textAlign="center" mt={5}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
-    <EntityList
-      rows={patients}
-      columns={columns}
-      newPath="/patients/new"
-    />
+    <EntityList rows={patients} columns={columns} newPath="/patients/new" />
   );
 }
