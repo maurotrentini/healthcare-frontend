@@ -1,39 +1,52 @@
-# Healthcare Admin Dashboard
+# 🏥 Healthcare Admin Dashboard
 
-This is a simple frontend application for managing appointments, doctors, clinics, and patients in a healthcare system. The app is built using **React**, powered by **Vite**, and styled with **Material UI (MUI)**. It interacts with a RESTful backend API (following the Hydra spec) to perform CRUD operations.
+A simple **React** frontend for managing appointments, doctors, clinics, and patients in a healthcare system.
+It interacts with a **Hydra-compliant REST API** (e.g. Symfony 7 + API Platform) to perform CRUD operations.
 
-## 🔧 Technologies Used
+Built with modern tools like **Vite**, **Material UI**, and **React Hook Form**.
 
-- **React** (with Hooks)
-- **Vite** (for fast development & hot reload)
-- **Material UI (MUI)** (for UI components and styling)
-- **React Router v6** (for client-side routing)
-- **React Hook Form** (for form handling)
-- **Axios** (via a simple API wrapper)
-- **Hydra-powered API** (HATEOAS-compliant backend, such as API Platform)
+---
+
+## 🧰 Tech Stack
+
+- **React 19** (with Hooks)
+- **Vite** (for fast dev & hot reload)
+- **Material UI (MUI)** (for UI components & theming)
+- **React Router v6** (for routing)
+- **React Hook Form** (for form state & validation)
+- **Axios** (via a lightweight API wrapper)
+- **Hydra-powered API** (HATEOAS-compliant backend, such as [API Platform](https://api-platform.com/))
+
+---
 
 ## 📁 Project Structure
 
-- /src
-- /api ← Axios config and helpers
-- /components ← Reusable components like EntityList and Layout
-- /pages ← Appointments, Doctors, Clinics, Patients (List + Form)
-- App.jsx
-- main.jsx
-- router.jsx
+```
+/healthcare-frontend
+├── /api               # Axios instance & helpers
+├── /components        # Reusable UI components (e.g. EntityList, Layout)
+├── /pages             # Pages for Appointments, Doctors, Clinics, Patients
+├── App.jsx            # Root component
+├── main.jsx           # App bootstrap + ThemeProvider
+└── router.jsx         # Client-side routes
+```
+
+---
 
 ## 🚀 Getting Started
 
-### Prerequisites
+### ✅ Prerequisites
 
 Make sure you have:
 
-- **Node.js v18+**
-- **npm v9+**
+- **Node.js** v18+
+- **npm** v9+
 
-> 🐳 Docker is not required to run this project.
+> 🐳 Docker is _not_ required — this project runs fine locally via `npm`.
 
-### Installation
+---
+
+### 📦 Installation
 
 ```bash
 git clone https://github.com/maurotrentini/healthcare-frontend.git
@@ -41,30 +54,50 @@ cd healthcare-frontend
 npm install
 ```
 
-### Running the App
+---
+
+### ▶️ Running the App
 
 ```bash
 npm run dev
 ```
 
-This will start the development server
+- App runs at: `http://localhost:5173` or `http://localhost:3000` (unless those ports are already in use, in which case it will auto-select and show a different port number)
+- Make sure your **backend API** is running at `http://localhost:8000` (or update the API base URL accordingly).
+- The API must support **CORS** for frontend access.
 
-### Notes
+---
 
-⚠️ Make sure your backend API is also running (e.g. on http://localhost:8000) and configured to allow CORS.
+## ✨ Features
 
-✨ Features
-View, create and edit, appointments, doctors, patients, and clinics
+- View, create, and edit:
 
-Form validation with controlled inputs
+  - Appointments
+  - Doctors
+  - Clinics
+  - Patients
 
-Loading indicators for form and list views
+- Form validation with `React Hook Form`
+- Loading spinners for form and list views
+- Pagination for appointment listings
+- Responsive layout with MUI’s AppBar + Drawer
+- Fast local development with Vite’s hot reload
 
-Responsive navigation with MUI AppBar + Drawer layout
+---
 
-Pagination (for appointments)
+## ⚠️ Notes
 
-Local development with Vite’s fast refresh
+This prototype is optimized for **rapid development and demonstration purposes**.
 
-🔚 Notes
-This app is designed for quick development and demo purposes. Some features (such as global error boundaries, authentication, or production optimization) are out of scope for now.
+Due to time constraints, the following features are **out of scope for now**:
+
+- Global error boundaries
+- Authentication or user access control
+- Production build optimization
+- Unit or integration tests
+
+---
+
+## 📄 License
+
+MIT © [Mauro Trentini](https://github.com/maurotrentini)
