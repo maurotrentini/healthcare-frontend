@@ -4,7 +4,7 @@ import axios from 'axios';
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export default axios.create({
-  //baseURL: '/api',        // proxied to http://localhost:8000
+  //baseURL: '/api',        //proxied to http://localhost:8000 (works for local development only)
   baseURL: `${API_BASE}/api`,
   headers: { 
     'Accept': 'application/ld+json',
